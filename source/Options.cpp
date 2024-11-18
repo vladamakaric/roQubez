@@ -31,7 +31,7 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 
 COptions::COptions() : 
 	mainMenu(CVector((CGame::GetInstance()->screenWidth - BTN_W)/2, 35), 
-	"main menu", CGame::GetInstance()->mainMenuBtnFont, BTN_W, 50),
+	"menu", CGame::GetInstance()->mainMenuBtnFont, BTN_W, 50),
 	instructionLine1("LEFT/RIGHT: horizontal tetrimino movement", CGame::GetInstance()->creditsFont, 0xffffffff),
 	instructionLine2("UP: CCW 90 degree tetrimino rotation", CGame::GetInstance()->creditsFont, 0xffffffff),
 	instructionLine3("DOWN: accelerate tetrimino free fall", CGame::GetInstance()->creditsFont, 0xffffffff),

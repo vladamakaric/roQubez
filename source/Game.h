@@ -24,6 +24,7 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef GAME_H
 #define GAME_H
 
+#include "SDL.h"
 #include "State.h"
 #include "MainMenu.h"
 #include "global.h"
@@ -51,10 +52,12 @@ public:
 	static CGame *GetInstance();
 	
 
+	SDL_Window* window;
+	SDL_GLContext glContext;
 	TTF_Font* headLineFont;
 	TTF_Font* mainMenuBtnFont;
 	TTF_Font* highScoresFont;
-	TTF_Font* copyrightFont;
+	TTF_Font* scoreFont;
 	TTF_Font* creditsFont;
 	TTF_Font* smallBtnFont;
 private:

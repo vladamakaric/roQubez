@@ -25,8 +25,10 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 #include "global.h"
 #include "TetriminoManager.h"
 #include "HighScores.h"
+#include "SdlError.h"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h> 
+#include <iostream>
 
 CGame::CGame(int _screenWidth, int _screenHeight) : 
 	screenWidth(_screenWidth),
@@ -52,27 +54,38 @@ CGame::CGame(int _screenWidth, int _screenHeight) :
 
 	double fontMultiplier = 1;
 	headLineFont = TTF_OpenFont("data/SF Square Head.ttf", 86*fontMultiplier);
-
-	
-
 	mainMenuBtnFont = TTF_OpenFont("data/SF Square Head.ttf", 36*fontMultiplier);
-	smallBtnFont = TTF_OpenFont("data/SF Square Head.ttf", 18*fontMultiplier);
-	copyrightFont = TTF_OpenFont("data/LiberationSans-Regular.ttf", 12);
-	creditsFont = TTF_OpenFont("data/SF Square Head Condensed.ttf", 23*fontMultiplier);
+	scoreFont = TTF_OpenFont("data/SF Square Head.ttf", 21*fontMultiplier);
+	smallBtnFont = TTF_OpenFont("data/SF Square Head.ttf", 33*fontMultiplier);
+	creditsFont = TTF_OpenFont("data/SF Square Head Condensed.ttf", 34*fontMultiplier);
 	highScoresFont = TTF_OpenFont("data/SF Square Head.ttf", 26*fontMultiplier);
-
 }
 
 void CGame::InitGrafix()
 {
 	SDL_Init( SDL_INIT_EVERYTHING );
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); 
-	SDL_SetVideoMode( screenWidth, screenHeight, 32, SDL_OPENGL );
+	window = SDL_CreateWindow("My Game Window",
+                          SDL_WINDOWPOS_UNDEFINED,
+                          SDL_WINDOWPOS_UNDEFINED,
+                          screenWidth, screenHeight,
+						  // SDL_WINDOW_FULLSCREEN | 
+						  SDL_WINDOW_OPENGL);
+
+	// TODO: Add error checking in other places. 
+	if (!window)
+        SdlError::Die("Unable to create window");
+
+	SdlError::Check(__LINE__);
+
+	glContext = SDL_GL_CreateContext(window);
+
+	SdlError::Check(__LINE__);
 
 	TTF_Init();
 
 
-    glClearColor( 0, 0, 0, 0 );
+    glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
 
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
@@ -82,24 +95,15 @@ void CGame::InitGrafix()
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
-	//glEnable(GL_LINE_SMOOTH);
-
-//  	glEnable(GL_POLYGON_SMOOTH);
-  // 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-		//glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
  	glEnable(GL_BLEND);
-	//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA). 
  	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
  	glShadeModel(GL_FLAT);
-
-    SDL_WM_SetCaption( "RoQubez", NULL );
 }
 
 void CGame::Run()
 {
 	int thisTime, lastTime = 0;
 	currentState = CMainMenu::GetInstance();
-
 	
 
 	while(run)
@@ -113,7 +117,6 @@ void CGame::Run()
 
 		while(SDL_PollEvent(&event))
 			currentState->RegisterEvents();
-
 		
 		currentState->Logic();
 		if(nextState != NULL)
@@ -128,7 +131,7 @@ void CGame::Run()
 
 		currentState->Draw();
 
-        SDL_GL_SwapBuffers();
+		SDL_GL_SwapWindow(window);
 		SDL_Delay(2);
 	}
 }

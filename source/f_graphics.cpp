@@ -56,15 +56,15 @@ GLuint F::GRAPHICS::GGetGLTextureIDFromSDL_Surface(SDL_Surface *_surface, int &_
 	SDL_PixelFormat *format = _surface->format;
 	Uint32 width = _surface->w;
 	Uint32 height = _surface->h;
-	Uint32 widthPow = (unsigned) pow( 2, ceil( log( width ) / log( 2 ) ) );
-	Uint32 heightPow = (unsigned) pow( 2, ceil( log( height ) / log( 2 ) ) );
-
+	// TODO: Clean this up. It used to be the nearest power of two, but everything works even if it isn't.
+	Uint32 widthPow = (unsigned) width;
+	Uint32 heightPow = (unsigned) height;
 
 	_PO2width = widthPow;
 
 	_PO2height = heightPow;
 
-	SDL_Surface* newSurface = SDL_CreateRGBSurface( SDL_SRCALPHA,
+	SDL_Surface* newSurface = SDL_CreateRGBSurface(0,
 												   widthPow, heightPow, 32,
 												   rmask, bmask, gmask, amask );
 	Uint32 alpha = 0;
@@ -75,10 +75,8 @@ GLuint F::GRAPHICS::GGetGLTextureIDFromSDL_Surface(SDL_Surface *_surface, int &_
 	rect.h = heightPow;
 	rect.w = widthPow;
 	int ret = SDL_FillRect( newSurface, &rect, alpha);
-	_surface->flags &= !SDL_SRCALPHA;
 
-	SDL_SetAlpha( newSurface, SDL_SRCALPHA, SDL_ALPHA_TRANSPARENT );
-
+	SDL_SetSurfaceAlphaMod(newSurface, SDL_ALPHA_TRANSPARENT);
 	
 	SDL_Rect smallRct = {0,0, Uint16(width), Uint16(height)};
 
@@ -91,9 +89,7 @@ GLuint F::GRAPHICS::GGetGLTextureIDFromSDL_Surface(SDL_Surface *_surface, int &_
  	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
- 	gluBuild2DMipmaps(GL_TEXTURE_2D, 4,
- 		widthPow, heightPow, GL_RGBA,GL_UNSIGNED_BYTE, newSurface->pixels);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthPow, heightPow, 0, GL_RGBA, GL_UNSIGNED_BYTE, newSurface->pixels);
 
 	SDL_FreeSurface( newSurface );
 	return texture;

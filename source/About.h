@@ -39,6 +39,7 @@ public:
 private: 
 	CAbout();
 	CImage text;
+	CImage email;
 	CRotatingTextButton mainMenu;
 };
 

@@ -120,7 +120,6 @@ void CGameOver::Initialize()
 {
 	scoreGoodEnough = CHighScores::GetInstance()->Placable(score);
 
-	SDL_EnableUNICODE( SDL_ENABLE );   
 
 	std::stringstream ss;
 	ss << score;
@@ -140,10 +139,7 @@ void CGameOver::Logic()
 
 		if(scoreGoodEnough)
 			CHighScores::GetInstance()->AddNewEntry(new CHSEntry(userStr, score, level, CGame::GetInstance()->matrixSize));
-
-		SDL_EnableUNICODE( SDL_DISABLE );   
 	}
-		
 }
 
 void CGameOver::SetScore(int _score, int _level)
@@ -156,44 +152,38 @@ void CGameOver::RegisterStringInput()
 {
 	bool change = false;
 
-	if( event.type == SDL_KEYDOWN )
-	{
+	if( event.type == SDL_TEXTINPUT ) {
 		if( userStr.length() <= CGame::GetInstance()->maxNameSize )
 		{
-			if(
-			( event.key.keysym.unicode >= (Uint16)'0' && event.key.keysym.unicode <= (Uint16)'9' ) ||
-			( event.key.keysym.unicode >= (Uint16)'A' && event.key.keysym.unicode <= (Uint16)'Z' ) ||
-			( event.key.keysym.unicode >= (Uint16)'a' && event.key.keysym.unicode <= (Uint16)'z' ))
-			{
-				userStr += (char)event.key.keysym.unicode;
-				change = true;
-			}
+			userStr += event.text.text;
+			change = true;
 		}
+	}
 
+	if( event.type == SDL_KEYDOWN )
+	{
 		if( event.key.keysym.sym == SDLK_BACKSPACE && !userStr.empty())
 		{
 			userStr.erase( userStr.length() - 1 );
 			change = true;
 		}
+	}
 
-		if(change)
+	if(change)
+	{
+		if(playerTxt!=NULL)
+			delete playerTxt;
+
+		if(userStr.empty())
 		{
-			if(playerTxt!=NULL)
-				delete playerTxt;
-
-			if(userStr.empty())
-			{
-				playerTxt = NULL;
-				blinkDiv.lowerLeft = CVector(CGame::GetInstance()->screenWidth/2, userTxtHeight);
-				return;
-			}
-
-			
-
-			playerTxt = new CImage(userStr, CGame::GetInstance()->headLineFont, CGame::GetInstance()->color2);
-
-			blinkDiv.lowerLeft = CVector((CGame::GetInstance()->screenWidth - playerTxt->width)/2 + playerTxt->width, userTxtHeight);
+			playerTxt = NULL;
+			blinkDiv.lowerLeft = CVector(CGame::GetInstance()->screenWidth/2, userTxtHeight);
+			return;
 		}
+
+		playerTxt = new CImage(userStr, CGame::GetInstance()->headLineFont, CGame::GetInstance()->color2);
+
+		blinkDiv.lowerLeft = CVector((CGame::GetInstance()->screenWidth - playerTxt->width)/2 + playerTxt->width, userTxtHeight);
 	}
 }
 

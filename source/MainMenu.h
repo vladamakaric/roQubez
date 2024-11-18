@@ -41,7 +41,6 @@ public:
 private: 
 	CMainMenu();
 	CImage headLine;
-	CImage copyrightLine;
 	int inset;
 
 	vector<CRotatingTextButton*> buttons;

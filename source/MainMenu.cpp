@@ -35,7 +35,6 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 
 CMainMenu::CMainMenu() : 
 	headLine("RoQubez", CGame::GetInstance()->headLineFont , 0x00ffffff),
-	copyrightLine("Copyright© 2013 Vladimir Makaric", CGame::GetInstance()->copyrightFont , 0x00ffffff),
 	inset((CGame::GetInstance()->screenWidth - headLine.width - 20)/2)
 {
 	double vertSpaceBetweenBtns = (CGame::GetInstance()->screenHeight - inset*3 - headLine.height - BTN_HEIGHT*5)/4;
@@ -131,20 +130,10 @@ void CMainMenu::Draw()
 
 	glColor3f(1,1,1);
 
-	//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	
-	
-	
-
 	glPopMatrix();
 
 
 	
-
-	copyrightLine.Draw(CVector((CGame::GetInstance()->screenWidth - copyrightLine.width)/2, 40));
-	//headLine.DrawInRectCenter(exit.mRect);
-
-
 	for(vector<CRotatingTextButton*>::iterator btn = buttons.begin(); btn!=buttons.end(); ++btn)
 		(*btn)->Draw();
 }

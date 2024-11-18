@@ -32,7 +32,7 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 
 CHighScores::CHighScores() : 
 	mainMenu(CVector((CGame::GetInstance()->screenWidth - BTN_W)/2, 50), 
-	"main menu", CGame::GetInstance()->mainMenuBtnFont, BTN_W, 50),
+	"menu", CGame::GetInstance()->mainMenuBtnFont, BTN_W, 50),
 	highScoresBigTxt("HIGH SCORES", CGame::GetInstance()->mainMenuBtnFont, 0xffffffff),
 	maxEntries(7)
 {

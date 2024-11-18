@@ -39,10 +39,10 @@ using namespace std;
 
 CLevel::CLevel(double _inset, int _matrixDimension) : 
 	LM(CVector(_inset,_inset), _matrixDimension, (CGame::GetInstance()->screenHeight - 7*_inset)/double(_matrixDimension)), 
-	mainMenu(CVector(LM.dimension*LM.tileSize + _inset*2, _inset), "main menu", CGame::GetInstance()->smallBtnFont, CGame::GetInstance()->screenWidth - LM.dimension*LM.tileSize - 3*_inset, 30), 
+	mainMenu(CVector(LM.dimension*LM.tileSize + _inset*2, _inset), "menu", CGame::GetInstance()->smallBtnFont, CGame::GetInstance()->screenWidth - LM.dimension*LM.tileSize - 3*_inset, 30), 
 	cwBtn(mainMenu.mRect.downLeft + CVector(0, _inset + mainMenu.mRect.height), "CW", CGame::GetInstance()->mainMenuBtnFont, mainMenu.mRect.width, mainMenu.mRect.width*0.8),
 	ccwBtn(cwBtn.mRect.downLeft + CVector(0, _inset + cwBtn.mRect.height), "CCW", CGame::GetInstance()->mainMenuBtnFont, cwBtn.mRect.width, cwBtn.mRect.height),
-	nextTetriminoTxt("Next: ", CGame::GetInstance()->smallBtnFont, 0xffffffff ),
+	nextTetriminoTxt("Next: ", CGame::GetInstance()->scoreFont, 0xffffffff ),
 	tileProgress(0), 
 	focusTTileProgress(0),
 	matrixSnap(false),
@@ -54,7 +54,7 @@ CLevel::CLevel(double _inset, int _matrixDimension) :
 	SPEED_UP(false),
 	sidewaysKeysTime(0),
 	maxSMovementPeriod(0.055),
-	sidewaysMovementPeriod(maxSMovementPeriod),  //u sekundama
+	sidewaysMovementPeriod(0.055),  //u sekundama
 	rotateKeyTime(0),
 	rotatePeriod(0.07),
 	gameOver(false),
@@ -74,8 +74,8 @@ CLevel::CLevel(double _inset, int _matrixDimension) :
 	degreesPerSecund = 90*pixelsPerSecond/double(LM.tileSize);
 	ROTATE_LEVEL = ROTATE_LEVELCCW = false;
 	rotateState = NONE;
-	pointsTxt = new CImage("Points: 0", CGame::GetInstance()->smallBtnFont, 0xffffffff);
-	levelTxt = new CImage("Level: 1", CGame::GetInstance()->smallBtnFont, 0xffffffff);
+	pointsTxt = new CImage("Points: 0", CGame::GetInstance()->scoreFont, 0xffffffff);
+	levelTxt = new CImage("Level: 1", CGame::GetInstance()->scoreFont, 0xffffffff);
 
 	levelTxtPos = CVector(_inset*2 + LM.dimension*LM.tileSize, CGame::GetInstance()->screenHeight-_inset);
 	pointsTxtPos = levelTxtPos - CVector(0, _inset);
@@ -177,12 +177,13 @@ void CLevel::Logic()
 		level++;
 		pixelsPerSecond += pixelsPerSecundPerLevel;
 		pixelsPerSecundPerLevel*=0.9;
+		levelDuration = levelDuration*1.3;
 
 		stringstream ss;
 		ss << level;
 
 		delete levelTxt;
-		levelTxt = new CImage("Level: " + ss.str(), CGame::GetInstance()->smallBtnFont, 0xffffffff);
+		levelTxt = new CImage("Level: " + ss.str(), CGame::GetInstance()->scoreFont, 0xffffffff);
 	}
 
 	if(cwBtn.mMouseClick)
@@ -877,7 +878,7 @@ void CLevel::HandleSlicingTetriminos()
 
 	stringstream ss; ss << points;
 	delete pointsTxt;
-	pointsTxt = new CImage("Points: " + ss.str(), CGame::GetInstance()->smallBtnFont, 0xffffffff);
+	pointsTxt = new CImage("Points: " + ss.str(), CGame::GetInstance()->scoreFont, 0xffffffff);
 }
 
 void CLevel::ThawStaticTetriminos()

@@ -30,7 +30,8 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 CAbout::CAbout() : 
 	mainMenu(CVector((CGame::GetInstance()->screenWidth - BTN_W)/2, 100), 
 	"main menu", CGame::GetInstance()->mainMenuBtnFont, BTN_W, 50),
-	text("programmed by Vladimir Makaric, vladaserbia@gmail.com", CGame::GetInstance()->creditsFont, 0xffffffff)
+	text("programmed by Vladimir Makaric in 2013", CGame::GetInstance()->creditsFont, 0xffffffff),
+	email("vladamakaric@gmail.com", CGame::GetInstance()->creditsFont, 0xffffffff)
 {
 
 }
@@ -48,6 +49,7 @@ CAbout* CAbout::GetInstance()
 void CAbout::Draw()
 {
 	text.DrawInRectCenter(CSquare(CVector(0,0), CVector(CGame::GetInstance()->screenWidth, CGame::GetInstance()->screenHeight)));
+	email.DrawInRectCenter(CSquare(CVector(0,0), CVector(CGame::GetInstance()->screenWidth, CGame::GetInstance()->screenHeight*0.8)));
 	mainMenu.Draw();
 }
 

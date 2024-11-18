@@ -1,8 +1,8 @@
 SRC = $(wildcard source/*.cpp)
-LIB = -lGL -lGLU -lSDL -lSDLmain -lSDL_ttf
+LIB = -lSDL2_ttf 
 
 all: 
-	g++ $(SRC) -o RoQubez $(LIB) 
+	g++ $(SRC) -o RoQubez $(LIB) `sdl2-config --cflags --libs` -framework OpenGL
 
 clean:
 	@echo Cleaning up...

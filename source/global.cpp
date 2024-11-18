@@ -24,4 +24,4 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 #include "global.h"
 
 SDL_Event event;
-Uint8 *keystates = SDL_GetKeyState( NULL );
+const Uint8 *keystates = SDL_GetKeyboardState( NULL );

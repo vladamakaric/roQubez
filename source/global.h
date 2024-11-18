@@ -28,7 +28,7 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 #include "SDL/SDL.h"
 #include "SDL/SDL_opengl.h"
 #include "SDL/SDL_ttf.h"
-#elif defined _WIN32 || defined _WIN64
+#elif defined _WIN32 || defined _WIN64 || defined __APPLE__
 #include "SDL.h"
 #include "SDL_opengl.h"
 #include "SDL_ttf.h"
@@ -41,6 +41,6 @@ along with RoQubez.  If not, see <http://www.gnu.org/licenses/>.
 #include <time.h>
 
 extern SDL_Event event;
-extern Uint8 *keystates;// = SDL_GetKeyState( NULL );
+extern const Uint8 *keystates;// = SDL_GetKeyState( NULL );
 
 #endif

@@ -25,4 +25,4 @@ RoQubez is under the GPL v3 licence, for more information check hte gpl.txt file
 Licences for the fonts used are in the same folder (LiberationSans and SF Square Head).
 
 CONTACT
-email: vladaserbia@gmail.com
+email: vladamakaric@gmail.com
