@@ -1,3 +1,5 @@
+GAMEPLAY VIDEO: https://youtu.be/-_3nL1vpIAg?si=IutPKNXYBQrxZhlk
+
 ![Alt text](/../screenshots/img/screen.png?raw=true "Optional Title")
 
 ABOUT:
